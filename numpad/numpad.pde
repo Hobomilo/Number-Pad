@@ -1,51 +1,69 @@
-//Global Variables
-int appWidth, appHeight;
-float x0, x1, x2, x3, y0, y1, y2, y3, y4, widthSquare, heightSquare;
-void setup() {
-  size (800, 1200);
-  appWidth = width;
-  appHeight = height;
+int[][] buttonValues = new int[4][3];
+boolean[][] buttonPressed = new boolean[4][3];
+int totalValue = 0;
+int numpadWidth = 400;
+int numpadHeight = 400;
 
-  widthSquare = appWidth*1/8;
-  heightSquare = appHeight*1/8;
-  x0 = appWidth*5/16;
-  x1 = appWidth*7/16;
-  x2 = appWidth*9/16;
-  x3 = appWidth*11/16;
-  y0 = appHeight*3/16;
-  y1 = appHeight*5/16;
-  y2 = appHeight*7/16;
-  y3 = appHeight*9/16;
-  y4 = appHeight*11/16;
-  //Population
-  rect(x1, y3, widthSquare, heightSquare); //0
-  rect(x0, y2, widthSquare, heightSquare); //1
-  rect(x1, y2, widthSquare, heightSquare); //2
-  rect(x2, y2, widthSquare, heightSquare); //3
-  rect(x0, y1, widthSquare, heightSquare); //4
-  rect(x1, y1, widthSquare, heightSquare); //5
-  rect(x2, y1, widthSquare, heightSquare); //6
-  rect(x0, y0, widthSquare, heightSquare); //7
-  rect(x1, y0, widthSquare, heightSquare); //8
-  rect(x2, y0, widthSquare, heightSquare); //9
+void setup() {
+  size(800, 800);
+  initializeButtonValues();
+  calculateTotalValue();
 }
 
 void draw() {
+  background(220);
+  drawNumberPad();
+}
+
+void initializeButtonValues() {
+  for (int row = 0; row < 4; row++) {
+    for (int coloumn = 0; coloumn < 3; coloumn++) {
+      buttonValues[row][coloumn] = (2-row) * 3 + (coloumn + 1);
+    }
+  }
+  buttonValues[3][1] = 0;
+}
+void drawNumberPad() {
+  float rectWidth = numpadWidth / 3;
+  float rectHeight = numpadHeight / 4;
+
+  for (int row = 0; row < 4 && row != 5  ; row++) {
+    for (int coloumn = 0; coloumn < 3; coloumn++) {
+      float x = coloumn * rectWidth + width / 4;
+      float y = row * rectHeight + height / 4;
+      boolean isMouseOver = mouseX >= x && mouseX <= x + rectWidth && mouseY >= y && mouseY <= y + rectHeight;
+      fill(isMouseOver ? color(200) : color(255));
+      rect(x, y, rectWidth, rectHeight);
+
+      fill(0);
+      textSize(32);
+      textAlign(CENTER, CENTER);
+      text(buttonValues[row][coloumn], x + rectWidth /2, y + rectHeight /2);
+    }
+  }
 }
 
 void mousePressed() {
-  if (mousePressed && mouseX > x0 && mouseX < x1 && mouseY > y2 && mouseY < y3) println("1"); //1
-    if (mousePressed && mouseX > x1 && mouseX < x2 && mouseY > y2 && mouseY < y3) println("2"); //2
-      if (mousePressed && mouseX > x2 && mouseX < x3 && mouseY > y2 && mouseY < y3) println("3"); //3
-        if (mousePressed && mouseX > x0 && mouseX < x1 && mouseY > y1 && mouseY < y2) println("4"); //4
-          if (mousePressed && mouseX > x1 && mouseX < x2 && mouseY > y1 && mouseY < y2) println("5"); //5
-            if (mousePressed && mouseX > x2 && mouseX < x3 && mouseY > y1 && mouseY < y2) println("6"); //6
-              if (mousePressed && mouseX > x0 && mouseX < x1 && mouseY > y0 && mouseY < y1) println("7"); //7
-                if (mousePressed && mouseX > x1 && mouseX < x2 && mouseY > y0 && mouseY < y1) println("8"); //8
-                  if (mousePressed && mouseX > x2 && mouseX < x3 && mouseY > y0 && mouseY < y1) println("9"); //9
-                    if (mousePressed && mouseX > x1 && mouseX < x2 && mouseY > y3 && mouseY < y4) println("0"); //0
+  for (int row = 0; row < 4; row++) {
+    for (int coloumn = 0; coloumn < 3; coloumn++) {
+      float x = coloumn * (numpadWidth/3) + width / 4;
+      float y = row * (numpadHeight /4) + height / 4;
+      if (mouseX >= x && mouseX <= x + numpadWidth / 3 && mouseY >= y && mouseY <= y + numpadHeight /4) {
+        buttonPressed[row][coloumn] = !buttonPressed[row][coloumn];
+        calculateTotalValue();
+      }
+    }
+  }
 }
 
-void keyPressed() {
-  if (keyPressed && key == 1) println("1");
+void calculateTotalValue() {
+  totalValue = 0;
+  for (int row = 0; row <4; row++) {
+    for (int coloumn = 0; coloumn < 3; coloumn++) {
+      if (buttonPressed[row][coloumn]) {
+        totalValue += buttonValues[row][coloumn];
+      }
+    }
+  }
+  println(totalValue);
 }
