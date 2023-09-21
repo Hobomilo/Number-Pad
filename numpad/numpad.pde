@@ -39,8 +39,10 @@ void drawNumberPad() {
       textSize(32);
       textAlign(CENTER, CENTER);
       text(buttonValues[row][coloumn], x + rectWidth /2, y + rectHeight /2);
+      
+      
     }
-  }
+  } 
 }
 
 void mousePressed() {
