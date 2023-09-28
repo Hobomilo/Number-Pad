@@ -1,16 +1,16 @@
-int[][] numberPad = new int[4][3]; // 4 rows and 3 columns for the number pad
+int[][] numberPad = new int[4][3]; // 4 x 3
 int timer = 0;
 int currentNumber = 0;
 boolean timerRunning = false;
 int previousTime = 0;
-int countdownInterval = 1000; // 1 second in milliseconds
+int countdownInterval = 1000; // 1 second 
 
 void setup() {
   size(400, 400);
   initializeNumberPad();
   textAlign(CENTER, CENTER);
   textSize(32);
-  frameRate(24); // Set the frame rate to 1 frame per second for countdown
+  frameRate(24); 
 }
 
 void draw() {
@@ -41,15 +41,15 @@ void initializeNumberPad() {
       numberPad[i][j] = num++;
     }
   }
-    // Change the "10" button to "Enter"
-  numberPad[3][0] = -1; // Use -1 to represent the Enter button
-  // Add 0 to the bottom row
+    // Change bottom left to enter
+  numberPad[3][0] = -1; // -1 = enter
+  // Add 0
   numberPad[3][1] = 0;
 }
 
 void drawNumberPad() {
-  float padWidth = width * 0.6;
-  float padHeight = height * 0.6;
+  float padWidth = width * 3/5;
+  float padHeight = height * 3/5;
   float startX = (width - padWidth) / 2;
   float startY = (height - padHeight) / 2;
 
@@ -67,7 +67,7 @@ void drawNumberPad() {
       text(number, x + padWidth / 6, y + padHeight / 8);
     }
   }
-  // Draw the clear button
+  // clear button draw
   float clearX = startX + 2 * (padWidth / 3);
   float clearY = startY + 3 * (padHeight / 4);
   boolean clearHovering = mouseX >= clearX && mouseX <= clearX + padWidth / 3 && mouseY >= clearY && mouseY <= clearY + padHeight / 4;
@@ -76,7 +76,7 @@ void drawNumberPad() {
   fill(clearHovering ? 150 : 0);
   text("C", clearX + padWidth / 6, clearY + padHeight / 8);
 
-  // Display the numbers pressed
+  // numbers entered display
   fill(0);
   text("Timer Set to: " + currentNumber, width / 2, height - 20);
 }
@@ -107,7 +107,7 @@ void checkButtonClick() {
       }
     }
   }
-  // Check for the clear button
+  // Checking clear
   float clearX = startX + 2 * (padWidth / 3);
   float clearY = startY + 3 * (padHeight / 4);
   if (mouseX >= clearX && mouseX <= clearX + padWidth / 3 && mouseY >= clearY && mouseY <= clearY + padHeight / 4) {
